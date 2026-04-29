@@ -3,7 +3,7 @@
 const { useState, useRef, useEffect } = React;
 
 // Get your free API key at https://aistudio.google.com/app/apikey
-const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE';
+const GEMINI_API_KEY = 'AIzaSyC_4NJ9Qz5VOFfWNEXIY3SZYtmYvTVvF-g';
 
 const SYSTEM_PROMPT = `You are Sanjana Kanchibotla's portfolio terminal assistant. You speak as her representative — warm, thoughtful, precise. Never verbose. Keep replies under 120 words. Use plain text, no markdown.
 
