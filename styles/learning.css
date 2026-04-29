@@ -1,0 +1,1026 @@
+/* ==========================================
+   LEARNING PAGE - Personal Journey Map
+   Hand-drawn background with interactive markers
+   ========================================== */
+
+#learning {
+    padding: calc(var(--section-padding) + 40px) 0 20px;
+    background: var(--cream);
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Learning Hero with Frost Quote */
+.learning-hero {
+    padding: 0 var(--container-padding) 40px;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.frost-quote {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-style: italic;
+    color: var(--dark-coffee);
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.frost-quote footer {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-style: normal;
+    font-weight: 400;
+    color: var(--coffee);
+    margin-top: 12px;
+    display: block;
+    opacity: 0.8;
+}
+
+.frost-quote cite {
+    font-style: italic;
+}
+
+/* Journey Guidance Text */
+.journey-guidance {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: rgba(60, 47, 35, 0.7);
+    text-align: center;
+    max-width: 700px;
+    margin: -20px auto 50px;
+    padding: 0 var(--container-padding);
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* Journey Map Container with Hand-drawn Background */
+.journey-map-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+    aspect-ratio: 1.25 / 1;
+    background-image: url('../assets/journey_bg.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    overflow: visible;
+}
+
+/* ==========================================
+   MARKER STYLES
+   ========================================== */
+
+/* Tree Markers (Knowledge Domains) - Invisible hotspots over background trees */
+.tree-marker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transform: translate(-50%, -50%);
+}
+
+.tree-marker .marker-hotspot {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.tree-marker .marker-hotspot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(70, 130, 180, 0.75);
+    transform: translate(-50%, -50%);
+    animation: treePulse 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.tree-marker:hover .marker-hotspot {
+    background: rgba(139, 115, 85, 0.15);
+    box-shadow: 0 0 0 4px rgba(139, 115, 85, 0.2), 0 0 20px rgba(139, 115, 85, 0.3);
+    transform: scale(1.1);
+}
+
+.tree-marker .marker-label {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2C1F13;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    padding: 12px 24px;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(60, 47, 35, 0.2);
+    border: 2px solid rgba(139, 115, 85, 0.4);
+    white-space: nowrap;
+    margin-top: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+}
+
+.tree-marker:hover .marker-label {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.tree-marker .marker-label::after {
+    content: ' • Click to know more';
+    font-size: 0.85rem;
+    opacity: 0.75;
+    font-weight: 400;
+}
+
+/* Tree Title - Always Visible */
+.tree-marker .tree-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2C1F13;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 12px 24px;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(60, 47, 35, 0.2);
+    border: 2px solid rgba(139, 115, 85, 0.4);
+    white-space: nowrap;
+    margin-top: 12px;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: none;
+}
+
+/* Stone Markers (Roadblocks) - Invisible hotspots over background stones */
+.stone-marker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 8;
+    transform: translate(-50%, -50%);
+}
+
+.stone-marker .marker-hotspot {
+    width: 70px;
+    height: 50px;
+    border-radius: 40%;
+    background: transparent;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.stone-marker .marker-hotspot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 40%;
+    border: 2px solid rgba(80, 64, 52, 0.8);
+    transform: translate(-50%, -50%);
+    animation: stonePulse 2.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.stone-marker:hover .marker-hotspot {
+    background: rgba(125, 113, 103, 0.2);
+    box-shadow: 0 0 0 3px rgba(125, 113, 103, 0.25), 0 0 15px rgba(125, 113, 103, 0.3);
+    transform: scale(1.15);
+}
+
+.stone-marker .marker-label {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2C1F13;
+    text-align: center;
+    background: rgba(255, 252, 248, 0.98);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 16px rgba(60, 47, 35, 0.2);
+    border: 2px solid rgba(125, 113, 103, 0.35);
+    white-space: nowrap;
+    margin-top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 240px;
+    white-space: normal;
+    line-height: 1.4;
+    pointer-events: none;
+}
+
+.stone-marker:hover .marker-label {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.stone-marker .marker-label::after {
+    content: ' • Click to know more';
+    font-size: 0.85rem;
+    opacity: 0.75;
+    font-weight: 400;
+}
+
+/* Bunny Marker (Journey Start) */
+.bunny-marker {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 11;
+    transform: translate(-50%, -50%);
+}
+
+.bunny-hotspot {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.bunny-hotspot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(232, 93, 68, 0.5);
+    transform: translate(-50%, -50%);
+    animation: bunnyPulse 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.bunny-marker:hover .bunny-hotspot {
+    background: rgba(232, 93, 68, 0.1);
+    transform: scale(1.1);
+}
+
+/* Bunny Speech Bubble */
+.bunny-speech-bubble {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-style: italic;
+    color: #2C1F13;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    padding: 12px 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(232, 93, 68, 0.25);
+    border: 2px solid rgba(232, 93, 68, 0.4);
+    white-space: nowrap;
+    margin-top: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+/* Speech bubble arrow pointing to bunny */
+.bunny-speech-bubble::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid rgba(232, 93, 68, 0.4);
+}
+
+.bunny-speech-bubble::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid rgba(255, 255, 255, 0.98);
+}
+
+.bunny-marker:hover .bunny-speech-bubble {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Achievement Markers (Gold Stars) - CSS-animated stars */
+.achievement-marker {
+    position: absolute;
+    cursor: pointer;
+    z-index: 9;
+    transform: translate(-50%, -50%);
+}
+
+.achievement-marker:hover {
+    z-index: 13;
+}
+
+/* Gold Star Shape */
+.gold-star {
+    width: 45px;
+    height: 45px;
+    position: relative;
+    animation: starFloat 3s ease-in-out infinite;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.achievement-marker:hover .gold-star {
+    transform: scale(1.3);
+    animation: starFloat 3s ease-in-out infinite, starBurst 0.5s ease-out;
+}
+
+.star-shape {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+    box-shadow:
+        0 0 20px rgba(255, 215, 0, 0.8),
+        0 0 40px rgba(255, 165, 0, 0.6),
+        0 0 60px rgba(255, 140, 0, 0.4),
+        inset 0 0 15px rgba(255, 255, 255, 0.4);
+    animation: starGlow 2s ease-in-out infinite;
+    position: relative;
+}
+
+/* Shimmer effect on stars */
+.star-shape::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.6) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    animation: starShimmer 3s linear infinite;
+}
+
+/* Center sparkle */
+.star-shape::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: starSparkle 1.5s ease-in-out infinite;
+}
+
+/* Gentle floating animation for stars */
+@keyframes starFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Pulsing ring animation for tree markers */
+@keyframes treePulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.3);
+        opacity: 0.3;
+    }
+}
+
+/* Pulsing ring animation for stone markers */
+@keyframes stonePulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.3);
+        opacity: 0.3;
+    }
+}
+
+/* Glow animation for gold stars */
+@keyframes starGlow {
+    0%, 100% {
+        box-shadow:
+            0 0 20px rgba(255, 215, 0, 0.8),
+            0 0 40px rgba(255, 165, 0, 0.6),
+            0 0 60px rgba(255, 140, 0, 0.4),
+            inset 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        box-shadow:
+            0 0 30px rgba(255, 215, 0, 1),
+            0 0 60px rgba(255, 165, 0, 0.8),
+            0 0 90px rgba(255, 140, 0, 0.6),
+            inset 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* Shimmer sweep effect */
+@keyframes starShimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%);
+    }
+}
+
+/* Sparkle in center */
+@keyframes starSparkle {
+    0%, 100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+/* Burst effect on hover */
+@keyframes starBurst {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.4);
+    }
+    100% {
+        transform: scale(1.3);
+    }
+}
+
+/* Pulsing animation for bunny marker */
+@keyframes bunnyPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.3;
+    }
+}
+
+/* ==========================================
+   POPUP STYLES
+   ========================================== */
+
+.journey-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    max-width: 700px;
+    width: 90%;
+    max-height: 85vh;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(30px);
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(60, 47, 35, 0.3);
+    border: 3px solid var(--coffee);
+    padding: 0;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.journey-popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: all;
+}
+
+.journey-popup.small {
+    max-width: 500px;
+}
+
+/* Popup Close Button */
+.popup-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    line-height: 1;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.popup-close:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+    transform: rotate(90deg);
+}
+
+/* Popup Header */
+.popup-header {
+    background: linear-gradient(135deg, var(--coffee), var(--dark-coffee));
+    color: white;
+    padding: 32px 36px;
+    border-radius: 20px 20px 0 0;
+    position: relative;
+}
+
+.popup-header h3 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: white;
+}
+
+.popup-subtitle {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin: 0;
+    color: rgba(255, 250, 240, 0.9);
+}
+
+/* Popup Content */
+.popup-content {
+    padding: 32px 36px 36px;
+    overflow-y: auto;
+    max-height: calc(85vh - 140px);
+}
+
+.popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+    background: rgba(232, 213, 196, 0.3);
+    border-radius: 10px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+    background: var(--coffee);
+    border-radius: 10px;
+}
+
+.popup-content::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-coffee);
+}
+
+.popup-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark-coffee);
+    margin: 0 0 28px 0;
+    font-weight: 400;
+}
+
+/* Popup Projects */
+.popup-projects {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.popup-project {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 22px;
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.08), rgba(139, 115, 85, 0.12));
+    border-radius: 16px;
+    border-left: 4px solid var(--coffee);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.popup-project:hover {
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.12), rgba(139, 115, 85, 0.18));
+    transform: translateX(6px);
+    border-left-width: 5px;
+    border-left-color: var(--dark-coffee);
+    box-shadow: 0 8px 24px rgba(60, 47, 35, 0.15);
+}
+
+.project-emoji {
+    flex-shrink: 0;
+    font-size: 2rem;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(60, 47, 35, 0.15);
+    border: 1px solid rgba(139, 115, 85, 0.15);
+}
+
+.popup-project div {
+    flex: 1;
+}
+
+.popup-project strong {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--espresso);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.popup-project p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--dark-coffee);
+    margin: 0 0 12px 0;
+    opacity: 0.92;
+}
+
+/* Project Links */
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--coffee);
+    text-decoration: none;
+    padding: 7px 16px;
+    background: rgba(139, 115, 85, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(139, 115, 85, 0.2);
+    transition: all 0.3s ease;
+    margin-right: 8px;
+    margin-top: 4px;
+}
+
+.project-link:hover {
+    background: var(--coffee);
+    color: var(--cream);
+    border-color: var(--coffee);
+    transform: translateX(3px);
+}
+
+/* Backdrop Overlay */
+.popup-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(60, 47, 35, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.popup-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .journey-map-container {
+        max-width: 1200px;
+        aspect-ratio: 1.25 / 1;
+    }
+
+    .tree-marker .marker-hotspot {
+        width: 70px;
+        height: 70px;
+    }
+
+    .stone-marker .marker-hotspot {
+        width: 60px;
+        height: 45px;
+    }
+
+    .maple-leaf {
+        width: 50px;
+        height: 50px;
+    }
+
+    .tree-marker .marker-label,
+    .stone-marker .marker-label {
+        font-size: 0.9rem;
+        padding: 10px 18px;
+    }
+
+    .tree-marker .tree-title {
+        font-size: 0.9rem;
+        padding: 10px 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    #learning {
+        padding: calc(var(--section-padding) + 60px) 0 var(--section-padding);
+    }
+
+    .frost-quote {
+        font-size: 1.5rem;
+        padding: 0 20px;
+        line-height: 1.5;
+    }
+
+    .frost-quote footer {
+        font-size: 0.8rem;
+        margin-top: 10px;
+    }
+
+    .journey-guidance {
+        font-size: 0.95rem;
+        margin: -16px auto 40px;
+    }
+
+    .journey-map-container {
+        aspect-ratio: 1.25 / 1;
+        border-radius: 16px;
+        margin: 0 20px;
+    }
+
+    .tree-marker .marker-hotspot {
+        width: 60px;
+        height: 60px;
+    }
+
+    .stone-marker .marker-hotspot {
+        width: 50px;
+        height: 40px;
+    }
+
+    .maple-leaf {
+        width: 45px;
+        height: 45px;
+    }
+
+    .tree-marker .marker-label,
+    .stone-marker .marker-label {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+    }
+
+    .tree-marker .tree-title {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+    }
+
+    .journey-popup {
+        width: 95%;
+        max-width: none;
+        border-radius: 20px;
+    }
+
+    .popup-header {
+        padding: 20px 24px;
+    }
+
+    .popup-header h3 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+
+    .popup-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .popup-content {
+        padding: 20px 24px 24px;
+    }
+
+    .popup-project {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 12px;
+        padding: 16px 0;
+    }
+
+    .popup-project strong {
+        font-size: 1.05rem;
+    }
+
+    .popup-project p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .project-emoji {
+        font-size: 1.6rem;
+        width: 44px;
+        height: 44px;
+    }
+
+    .project-link {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #learning {
+        padding: calc(var(--section-padding) + 60px) 0 var(--section-padding);
+    }
+
+    .frost-quote {
+        font-size: 1.2rem;
+        padding: 0 16px;
+        line-height: 1.4;
+    }
+
+    .frost-quote footer {
+        font-size: 0.75rem;
+        margin-top: 8px;
+    }
+
+    .journey-guidance {
+        font-size: 0.85rem;
+        margin: -12px auto 32px;
+        padding: 0 16px;
+    }
+
+    .journey-map-container {
+        aspect-ratio: 1.25 / 1;
+        margin: 0 16px;
+        border-radius: 12px;
+    }
+
+    .tree-marker .marker-hotspot {
+        width: 50px;
+        height: 50px;
+    }
+
+    .stone-marker .marker-hotspot {
+        width: 45px;
+        height: 35px;
+    }
+
+    .maple-leaf {
+        width: 40px;
+        height: 40px;
+    }
+
+    .tree-marker .marker-label,
+    .stone-marker .marker-label {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+
+    .tree-marker .tree-title {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+
+    .journey-popup {
+        width: 96%;
+        border-radius: 16px;
+        border: 2px solid var(--coffee);
+    }
+
+    .popup-close {
+        top: 16px;
+        right: 20px;
+        font-size: 1.5rem;
+        width: 32px;
+        height: 32px;
+    }
+
+    .popup-header {
+        padding: 16px 20px;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .popup-header h3 {
+        font-size: 1.3rem;
+        line-height: 1.3;
+        margin: 0 0 8px 0;
+    }
+
+    .popup-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .popup-content {
+        padding: 16px 20px 20px;
+        max-height: calc(85vh - 120px);
+    }
+
+    .popup-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0 0 20px 0;
+    }
+
+    .popup-project {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 10px;
+        padding: 14px 0;
+    }
+
+    .popup-project strong {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+
+    .popup-project p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 0 0 10px 0;
+    }
+
+    .project-emoji {
+        font-size: 1.4rem;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .project-link {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        margin-right: 6px;
+    }
+}

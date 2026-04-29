@@ -1,0 +1,13 @@
+
+
+
+What genuinely excites me is problem solving. I love playing with data, building models, testing hypotheses, and seeing where the conclusions land.
+
+One of the most recent things I worked on was studying whether ESG performance translates to better stock returns. I had read so many studies arguing either side and I wanted to conduct one of my own. The findings were rather surprising — it is possible the market was never rewarding ESG at all, but rather good fundamentals all along. That kind of discovery is what I find most fascinating about this work.
+
+Through engineering, product design, and now analytics at Rotman, I have deliberately built a toolkit — user empathy, statistical modelling, ML, financial data analysis — because I want to be able to solve these kinds of problems. Especially the ones where the deeper you go, the stronger the signal gets. 
+
+And, that is where my passion lives.
+
+
+
