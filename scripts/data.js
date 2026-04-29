@@ -18,7 +18,6 @@ window.PORTFOLIO = {
     { id: "work", name: "Work", kind: "folder" },
     { id: "projects", name: "Projects", kind: "folder" },
     { id: "competitions", name: "Competitions", kind: "folder" },
-    { id: "learning", name: "Learning", kind: "folder" },
     { id: "about", name: "About_Me", kind: "folder" },
   ],
 
@@ -43,7 +42,7 @@ window.PORTFOLIO = {
         ]},
         { h: "Craft", p: "Deployed in Streamlit with an examiner-friendly configuration UI. Managed version control via GitHub for traceability across model, data, and UI changes. Defined a future evaluation framework using simulated, real-life-inspired case scenarios for continuous quality improvement." },
       ],
-      tags: ["RAG", "LLM", "Streamlit", "Databricks", "Ethnographic Research"],
+      tags: ["RAG", "LLM", "Python", "FinTech", "Databricks"],
       metrics: [
         { v: "2 wks", l: "embedded research" },
         { v: "100+", l: "annual reviews scoped" },
@@ -73,7 +72,7 @@ window.PORTFOLIO = {
         { h: "Calibration & Fairness", p: "Platt Scaling on validation preds: calibration gap 3.0% → 0.1%, Brier 0.0813 → 0.0799. Fairness audit across gender/age/region: max calibration gap 1.1%, Disparate Impact Ratio 1.021 (passes 80% rule)." },
         { h: "Counterfactuals", p: "Generated recourse for 13 high-risk borrowers using DiCE, bounded to 5th–95th percentile. 100% success across 46 counterfactuals. Avg 2.2 feature changes per recommendation — LTV, DTIR, and loan term the most frequently modified actionable features." },
       ],
-      tags: ["PyTorch", "DiCE", "SMOTE", "Platt Scaling", "Fairness"],
+      tags: ["PyTorch", "Machine Learning", "Explainable AI", "FinTech", "Neural Networks"],
       metrics: [
         { v: "88.8%", l: "test AUC-ROC" },
         { v: "0.83", l: "AUC-PR" },
@@ -96,7 +95,7 @@ window.PORTFOLIO = {
         { h: "Transparency", p: "Reasoning traces expose supporting and counter-evidence for every verdict, classifying evidence into six types: user quotes, behavioural observations, support tickets, analytics, stakeholder input, competitor intel." },
         { h: "Research Foundation", p: "Built on a literature review of Kahneman-Tversky and Morewedge et al. on HiPPO bias, confirmation bias, anchoring. Validated through interviews with practicing PMs." },
       ],
-      tags: ["Gemini", "Streamlit", "Prompt Eng.", "SQLite", "User Research"],
+      tags: ["LLM", "NLP", "Python", "Prompt Engineering"],
       metrics: [
         { v: "6", l: "evidence types" },
         { v: "5", l: "intent modes" },
@@ -122,7 +121,7 @@ window.PORTFOLIO = {
         ]},
         { h: "Stack", p: "Python 3.10, Flask, OpenCV, YOLOv8, Roboflow, Pandas, Scikit-learn." },
       ],
-      tags: ["YOLOv8", "Flask", "User Study", "Clustering"],
+      tags: ["Computer Vision", "Python", "Machine Learning", "Deep Learning"],
       metrics: [
         { v: "101", l: "participants" },
         { v: "r=0.68", l: "simplicity ↔ preference" },
@@ -144,7 +143,7 @@ window.PORTFOLIO = {
         { h: "Model", p: "2 hidden layers [256, 128], ReLU + BatchNorm + Dropout 0.3, Adam lr 0.001. Deeper architectures ([512,256,128,64]) dropped to 82–83% due to noise amplification — a lesson worth keeping." },
         { h: "Training", p: "5-fold stratified ensemble; minority class weight 1.2x; threshold optimised 0.5 → 0.70 after a sweep over 0.30–0.70." },
       ],
-      tags: ["Keras", "k-fold", "Threshold Tuning"],
+      tags: ["Keras", "Deep Learning", "Neural Networks", "Python"],
       metrics: [
         { v: "85.6%", l: "accuracy" },
         { v: "0.91", l: "AUC-ROC" },
@@ -167,7 +166,7 @@ window.PORTFOLIO = {
         ]},
         { h: "Insight", p: "Geography matters more than job title — the same role shows 3x salary variance by country." },
       ],
-      tags: ["Random Forest", "GridSearchCV", "Data Cleaning"],
+      tags: ["Machine Learning", "Python", "Data Science"],
       metrics: [
         { v: "3,300+", l: "records unified" },
         { v: "4", l: "datasets merged" },
@@ -198,7 +197,7 @@ window.PORTFOLIO = {
         { h: "Design", p: "ThirdPlace: dual-sided social marketplace, credit-based subscription (8/16/32-credit plans with rollover), opt-in adaptive pricing for off-peak, transparent commission lower than Groupon's 50%." },
         { h: "Validation", p: "Hypothesis register across desirability / feasibility / viability with 5 hypotheses, each assigned risk, evidence classification, and specific experiment design." },
       ],
-      tags: ["User Research", "Mixed-Methods", "Marketplace", "Strategy"],
+      tags: ["Data Science", "Python", "Strategy"],
       metrics: [
         { v: "1st", l: "of all teams" },
         { v: "8", l: "interviews" },
@@ -220,7 +219,7 @@ window.PORTFOLIO = {
         { h: "Finding", p: "35% positive ROI in US markets; loss-making spend in Canada." },
         { h: "Recommendation", p: "Reallocate $75–90K in paid search budget from Canada to the US." },
       ],
-      tags: ["Causal Inference", "Marketing Analytics", "Python"],
+      tags: ["Causal Inference", "Python", "Data Science", "FinTech"],
       metrics: [
         { v: "1st", l: "place" },
         { v: "35%", l: "US ROI" },
@@ -250,7 +249,7 @@ window.PORTFOLIO = {
           "62% said it would change their view of Manulife.",
         ]},
       ],
-      tags: ["LLM", "FinTech", "Prototype", "User Research"],
+      tags: ["LLM", "FinTech", "NLP", "Python"],
       metrics: [
         { v: "7/43", l: "finalists" },
         { v: "73%", l: "benefits unused" },
@@ -302,11 +301,8 @@ window.PORTFOLIO = {
   personality: {
     quote: "I cannot engage with anything at surface level. I need to understand the full system before I trust myself to say or build anything.",
     paragraphs: [
-      "I started in mechanical engineering, which gave me a seriousness about getting things right, not just getting things to run. The technical answer alone was never the full answer, which is what pulled me toward product design. Design taught me to ask whether the right problem is being solved before solving anything.",
-      "At Rotman I went deeper into statistical models, caring about why they broke as much as why they worked. What makes me a capable data scientist is not the breadth of tools I have touched. It is that I approach every problem the way a designer would: starting with the question, not the method.",
-      "Outside of the work I dance, mostly classical Indian, plus whatever the kitchen floor allows at midnight. I write in long walks and short notebooks, mostly about cities and rooms and the things people do not say. I keep a steady rotation of music: Begum Akhtar in the morning, Nick Drake in the evening, the Bach Cello Suites whenever I am stuck. I read Mary Oliver and T.S. Eliot to reset my attention, and the Russians on long flights when I want a different century to think in.",
-      "I am also the person who builds the alumni system, plans the dinner, and keeps the group chat alive. I came up through student governance and an unusual amount of organising before I came up through models. That has shaped what I think a good data scientist looks like: someone who can hold a room, not only a notebook.",
-      "I am choosing to start in data science because it is where the most honest, high stakes problem solving is happening right now. I want to earn the technical depth before I earn the authority to make product decisions on top of it. The sequencing is deliberate.",
+      "I started in mechanical engineering, which gave me a seriousness about getting things right. Product design taught me to ask whether the right problem is being solved before solving it. At Rotman I went deeper into the models that make real decisions in finance, and into why they break. Every project here started with something I did not understand and ended with something precise.",
+      "When I am not at a desk, I am dancing. I trained in hip hop, contemporary, and two forms of Indian classical dance, though contemporary is where most of my practice lives. The playlist that follows me around runs from Linkin Park and Alec Benjamin to a long list of niche Indian hip hop and R&B artists.",
     ],
   },
 

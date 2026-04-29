@@ -552,18 +552,33 @@ img { display: block; }
 .gallery {
   padding: 18px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
 }
-.gallery img {
+.gallery-item {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.gallery-item img {
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 4/3;
   object-fit: cover;
   border-radius: 4px;
   box-shadow: var(--shadow-icon);
   transition: transform 0.2s;
+  display: block;
 }
-.gallery img:hover { transform: scale(1.02); }
+.gallery-item:hover img { transform: scale(1.02); }
+.gallery-caption {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  line-height: 1.4;
+  text-align: center;
+  padding: 0 4px;
+}
 
 /* ---------- Document / Dossier ---------- */
 .doc {

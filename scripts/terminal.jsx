@@ -1,20 +1,23 @@
 /* global React */
-// Terminal / Chatbot component — uses window.claude.complete
+// Terminal / Chatbot component — powered by Google Gemini API
 const { useState, useRef, useEffect } = React;
+
+// Get your free API key at https://aistudio.google.com/app/apikey
+const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE';
 
 const SYSTEM_PROMPT = `You are Sanjana Kanchibotla's portfolio terminal assistant. You speak as her representative — warm, thoughtful, precise. Never verbose. Keep replies under 120 words. Use plain text, no markdown.
 
 Context about Sanjana:
 - Currently at CIBC (Jan 2026–present) designing an AI-driven exam-scoping assistant for AML examiners: a proactive AI agent + RAG over historical exam reports, inline chatbot for document Q&A, roadmap for Databricks ingestion and a news-trained insight LLM. Deployed in Streamlit.
 - Master of Management Analytics, Rotman (2026). B.Tech Mechanical Engineering + Minor in Product Design, IIITDM (2025).
-- Key projects: Credit risk with counterfactual explanations (88.8% AUC-ROC, DiCE, Platt calibration, fairness audit DIR 1.02); Evidence Engine (bias mitigation tool for PMs on Gemini); Aesthify (YOLOv8 + 101-person user study — simplicity r=0.68, symmetry r=-0.60); US Census income NN (85.6%, 0.91 AUC); Alumni career RF on 3,300+ unified records.
-- Wins: 1st Koru Problem Hunt 2025 (ThirdPlace hobby marketplace), 1st Rotman MMA Datathon 2026 (causal inference, $75–90K reallocation), Finals Rotman Design Challenge 2026 (Compass for Manulife).
-- Personality: cannot engage at surface level; starts with the question, not the method; earning technical depth before product authority. Reads poetry (T.S. Eliot, Mary Oliver), Russian classics, dances classical Indian, black pour-over coffee.
+- Key projects: Credit risk with counterfactual explanations (88.8% AUC-ROC, PyTorch, fairness audit DIR 1.02); Evidence Engine (bias mitigation tool for PMs, Gemini-powered); Aesthify (Computer Vision + 101-person user study — simplicity r=0.68, symmetry r=-0.60); US Census income NN (85.6%, 0.91 AUC, Keras); Alumni career ML on 3,300+ unified records.
+- Wins: 1st Koru Problem Hunt 2025 (ThirdPlace hobby marketplace), 1st Rotman MMA Datathon 2026 (causal inference, $75–90K reallocation), Finals Rotman Design Challenge 2026 (Compass for Manulife, top 7 of 43).
+- Personality: cannot engage at surface level; starts with the question, not the method; earning technical depth before product authority. Trained in hip hop, contemporary, and two forms of Indian classical dance. Listens to Linkin Park, Alec Benjamin, niche Indian hip hop and R&B.
 - Contact: sanjanakanchibotla@gmail.com; github.com/sanjxksl; linkedin.com/in/sanjanaksl; based in Toronto.
 
 Rules:
 - If asked "who are you" or "about you", answer as Sanjana in first person briefly.
-- If asked for commands list: help, about, projects, work, learning, contact, clear, skills.
+- If asked for commands list: help, about, projects, work, competitions, contact, clear, skills.
 - If unclear, ask a short clarifying question.
 - Never invent facts. If you don't know, say so and point to the Finder windows or her email.`;
 
@@ -165,16 +168,36 @@ function Terminal({ onCommand }) {
     return false;
   };
 
-  const askClaude = async (q) => {
+  const askGemini = async (q) => {
     setThinking(true);
-    try {
-      const reply = await window.claude.complete({
-        messages: [
-          { role: 'user', content: `${SYSTEM_PROMPT}\n\nVisitor asks: ${q}` }
-        ],
-      });
+    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
       setThinking(false);
-      const text = (reply || "").trim();
+      push([
+        { kind: 'err', text: "ai replies not configured yet." },
+        { kind: 'sys', text: "try the built-in commands: help, about, projects, work, skills, contact" },
+        { kind: 'sys', text: "" },
+      ]);
+      return;
+    }
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              role: 'user',
+              parts: [{ text: `${SYSTEM_PROMPT}\n\nVisitor asks: ${q}` }],
+            }],
+            generationConfig: { maxOutputTokens: 200, temperature: 0.7 },
+          }),
+        }
+      );
+      const data = await res.json();
+      setThinking(false);
+      const text = (data?.candidates?.[0]?.content?.parts?.[0]?.text || "").trim();
+      if (!text) throw new Error('empty');
       const chunks = text.split(/\n+/).filter(Boolean);
       push([
         ...chunks.map((t) => ({ kind: 'assistant', text: t })),
@@ -183,7 +206,7 @@ function Terminal({ onCommand }) {
     } catch (e) {
       setThinking(false);
       push([
-        { kind: 'err', text: "terminal offline — can't reach the model right now." },
+        { kind: 'err', text: "couldn't reach the model right now." },
         { kind: 'sys', text: "try: help · or email sanjanakanchibotla@gmail.com" },
         { kind: 'sys', text: "" },
       ]);
@@ -200,7 +223,7 @@ function Terminal({ onCommand }) {
     setInput('');
     if (handleLocal(v)) return;
     setBusy(true);
-    await askClaude(v);
+    await askGemini(v);
     setBusy(false);
   };
 

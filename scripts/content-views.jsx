@@ -122,14 +122,29 @@ function FinderContent({ folder, tag, activeFileId, onOpenFile }) {
 
   // Gallery view
   if (folder === 'gallery' && !tag) {
+    const galleryItems = [
+      { src: 'images/gallery/01.jpeg', caption: 'Celebrating our contribution to Rotman as Ambassadors' },
+      { src: 'images/gallery/02.jpeg', caption: 'Presenting at the Rotman Datathon 2026 finals' },
+      { src: 'images/gallery/03.jpeg', caption: 'Orientation for Rotman\'s Master of Management Analytics' },
+      { src: 'images/gallery/04.jpeg', caption: 'Presenting at the Manulife RDC Case Competition finals' },
+      { src: 'images/gallery/05.jpeg', caption: 'First place at the Datathon Prize Ceremony' },
+      { src: 'images/gallery/06.jpeg', caption: 'Presenting at the Koru Case Competition finals' },
+      { src: 'images/gallery/07.jpeg', caption: 'Design for Future workshop with students from across North America' },
+      { src: 'images/gallery/08.jpeg', caption: 'Showcasing our work at CIBC to the Rotman panel' },
+    ];
     return (
       <div className="finder-content">
         <div className="finder-toolbar">
           <span>Gallery · everyday frames</span>
-          <span>{1} item</span>
+          <span>{galleryItems.length} items</span>
         </div>
         <div className="gallery">
-          <img src="images/gallery/01.jpeg" alt="" />
+          {galleryItems.map((item, i) => (
+            <div key={i} className="gallery-item">
+              <img src={item.src} alt={item.caption} />
+              <div className="gallery-caption">{item.caption}</div>
+            </div>
+          ))}
         </div>
       </div>
     );

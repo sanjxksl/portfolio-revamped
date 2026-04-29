@@ -144,6 +144,19 @@ function MailAppIcon() {
   );
 }
 
+function GalleryAppIcon() {
+  return (
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="10" width="56" height="44" rx="7" fill="#f5efe1" stroke="#c9bda7" strokeWidth="1" />
+      <rect x="4" y="10" width="56" height="14" rx="7" fill="#e8dfcd" />
+      <rect x="4" y="18" width="56" height="6" fill="#e8dfcd" />
+      <circle cx="22" cy="32" r="6" fill="#d68aa3" opacity="0.6" />
+      <path d="M10 50 L20 36 L28 44 L36 34 L54 50 Z" fill="#c46a85" opacity="0.45" />
+      <circle cx="46" cy="29" r="4" fill="#c9bda7" opacity="0.5" />
+    </svg>
+  );
+}
+
 function GithubAppIcon() {
   return (
     <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
@@ -183,18 +196,14 @@ function getDefaultIcons() {
     { id: 'work',         label: 'work',          kind: 'folder', color: 'blue',   xp: 0.04, yp: 0.04, action: { type: 'finder', folder: 'work' } },
     { id: 'notion',       label: 'now.txt',       kind: 'notion',                  xp: 0.18, yp: 0.06, action: { type: 'reading' } },
     { id: 'projects',     label: 'projects',      kind: 'folder', color: 'blue',   xp: 0.86, yp: 0.04, action: { type: 'finder', folder: 'projects' } },
-    { id: 'gallery',      label: 'gallery.jpeg',  kind: 'image',  src: 'uploads/gallery-1776526940330.jpeg',
-                                                                                   xp: 0.66, yp: 0.05, action: { type: 'gallery' } },
     // mid-left & right
     { id: 'headshot',     label: 'about.png', kind: 'image', src: 'uploads/headshot-1776526911776.png',
                                                                                    xp: 0.05, yp: 0.55, action: { type: 'about' } },
     { id: 'github',       label: 'github',        kind: 'app-github',               xp: 0.92, yp: 0.30, action: { type: 'href', href: 'https://github.com/sanjxksl' } },
-    { id: 'mail',         label: 'mail.app',      kind: 'app-mail',                 xp: 0.92, yp: 0.50, action: { type: 'href', href: 'mailto:sanjanakanchibotla@gmail.com' } },
     // bottom row
-    { id: 'competitions', label: 'competitions',  kind: 'folder', color: 'peony',  xp: 0.20, yp: 0.78, action: { type: 'finder', folder: 'competitions' } },
-    { id: 'learning',     label: 'learning.log',  kind: 'doc',                      xp: 0.78, yp: 0.78, action: { type: 'launch', id: 'learning' } },
-    { id: 'resume',       label: 'resume.pdf',    kind: 'resume',                   xp: 0.92, yp: 0.78, action: { type: 'launch', id: 'resume' } },
-    { id: 'terminal',     label: 'terminal.app',  kind: 'app-terminal',             xp: 0.05, yp: 0.78, action: { type: 'launch', id: 'terminal' } },
+    { id: 'competitions', label: 'competitions',  kind: 'folder', color: 'peony',  xp: 0.05, yp: 0.78, action: { type: 'finder', folder: 'competitions' } },
+    { id: 'learning',     label: 'learning.log',  kind: 'doc',                      xp: 0.92, yp: 0.78, action: { type: 'launch', id: 'learning' } },
+    { id: 'resume',       label: 'resume.pdf',    kind: 'resume',                   xp: 0.78, yp: 0.78, action: { type: 'launch', id: 'resume' } },
   ];
 }
 
@@ -319,15 +328,15 @@ function Menubar({ activeApp }) {
 // ============================================================
 function Dock({ openApps, onLaunch }) {
   const items = [
-    { id: 'finder',   label: 'Finder',     render: () => <FolderIcon color="blue" /> },
-    { id: 'about',    label: 'About',      render: () => <img src="uploads/headshot-1776526911776.png" alt="" style={{borderRadius:6,objectFit:'cover'}} /> },
-    { id: 'learning', label: 'Learning',   render: () => <DocIcon /> },
+    { id: 'finder',   label: 'Finder',            render: () => <FolderIcon color="blue" /> },
+    { id: 'gallery',  label: 'Gallery',            render: () => <GalleryAppIcon />, galleryAction: true },
+    { id: 'learning', label: 'Learning',            render: () => <DocIcon /> },
     { sep: true },
-    { id: 'terminal', label: 'Terminal',   render: () => <TerminalAppIcon /> },
-    { id: 'resume',   label: 'Resume',     render: () => <ResumeIcon /> },
+    { id: 'terminal', label: 'ask me anything',    render: () => <TerminalAppIcon /> },
+    { id: 'resume',   label: 'Resume',              render: () => <ResumeIcon /> },
     { sep: true },
-    { id: 'mail',     label: 'Write',      render: () => <MailAppIcon />, href: 'mailto:sanjanakanchibotla@gmail.com' },
-    { id: 'github',   label: 'GitHub',     render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
+    { id: 'mail',     label: 'get in touch',        render: () => <MailAppIcon />, href: 'mailto:sanjanakanchibotla@gmail.com' },
+    { id: 'github',   label: 'GitHub',              render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
   ];
   return (
     <div className="dock">
@@ -343,6 +352,13 @@ function Dock({ openApps, onLaunch }) {
             <a key={it.id} href={it.href} target={it.href.startsWith('http') ? '_blank' : undefined} rel="noopener" className="dock-item">
               {inner}
             </a>
+          );
+        }
+        if (it.galleryAction) {
+          return (
+            <div key={it.id} className={`dock-item ${isOpen ? 'open' : ''}`} onClick={() => onLaunch('finder', 'gallery')}>
+              {inner}
+            </div>
           );
         }
         return (
@@ -374,7 +390,7 @@ function Spotlight({ open, onClose, onLaunch, onOpenFile }) {
     { kind: 'app', name: 'About', k: 'App', go: () => onLaunch('about') },
     { kind: 'app', name: 'Learning Log', k: 'App', go: () => onLaunch('learning') },
     { kind: 'app', name: 'Resume.pdf', k: 'File', go: () => onLaunch('resume') },
-    { kind: 'app', name: 'Gallery', k: 'App', go: () => onLaunch('gallery') },
+    { kind: 'app', name: 'Gallery', k: 'App', go: () => { onLaunch('finder'); } },
     ...[...d.work, ...d.projects, ...d.competitions].map((p) => ({
       kind: 'doc', name: p.name, k: p.type, item: p, go: () => onOpenFile(p),
     })),
