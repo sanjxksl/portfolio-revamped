@@ -117,37 +117,68 @@ function FinderSidebar({ activeFolder, onOpenFolder, activeTag, onOpenTag }) {
   );
 }
 
+// ==================== GALLERY CAROUSEL ====================
+function GalleryView() {
+  const { useState: useS, useEffect: useE, useRef: useR } = React;
+  const captions = DATA().gallery || [];
+  const [images, setImages] = useS([]);
+  const [idx, setIdx] = useS(0);
+
+  useE(() => {
+    const found = [];
+    let i = 1;
+    const tryNext = () => {
+      if (i > 30) { setImages(found.slice()); return; }
+      const num = String(i).padStart(2, '0');
+      const img = new Image();
+      img.onload = () => {
+        found.push({ src: `images/gallery/${num}.jpeg`, caption: captions[i - 1] || '' });
+        i++;
+        tryNext();
+      };
+      img.onerror = () => setImages(found.slice());
+      img.src = `images/gallery/${num}.jpeg`;
+    };
+    tryNext();
+  }, []);
+
+  if (!images.length) {
+    return (
+      <div className="finder-content">
+        <div className="finder-toolbar"><span>Gallery · everyday frames</span></div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80%', color: 'var(--ink-faint)', fontFamily: 'var(--font-mono)', fontSize: 12 }}>loading images...</div>
+      </div>
+    );
+  }
+
+  const prev = () => setIdx((idx - 1 + images.length) % images.length);
+  const next = () => setIdx((idx + 1) % images.length);
+  const cur = images[idx];
+
+  return (
+    <div className="finder-content" style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="finder-toolbar">
+        <span>Gallery · everyday frames</span>
+        <span>{idx + 1} of {images.length}</span>
+      </div>
+      <div className="gallery-carousel">
+        <button className="gallery-nav" onClick={prev}>&#8249;</button>
+        <div className="gallery-stage">
+          <img key={cur.src} src={cur.src} alt={cur.caption} />
+          <div className="gallery-caption">{cur.caption}</div>
+        </div>
+        <button className="gallery-nav" onClick={next}>&#8250;</button>
+      </div>
+    </div>
+  );
+}
+
 function FinderContent({ folder, tag, activeFileId, onOpenFile }) {
   const d = DATA();
 
   // Gallery view
   if (folder === 'gallery' && !tag) {
-    const galleryItems = [
-      { src: 'images/gallery/01.jpeg', caption: 'Celebrating our contribution to Rotman as Ambassadors' },
-      { src: 'images/gallery/02.jpeg', caption: 'Presenting at the Rotman Datathon 2026 finals' },
-      { src: 'images/gallery/03.jpeg', caption: 'Orientation for Rotman\'s Master of Management Analytics' },
-      { src: 'images/gallery/04.jpeg', caption: 'Presenting at the Manulife RDC Case Competition finals' },
-      { src: 'images/gallery/05.jpeg', caption: 'First place at the Datathon Prize Ceremony' },
-      { src: 'images/gallery/06.jpeg', caption: 'Presenting at the Koru Case Competition finals' },
-      { src: 'images/gallery/07.jpeg', caption: 'Design for Future workshop with students from across North America' },
-      { src: 'images/gallery/08.jpeg', caption: 'Showcasing our work at CIBC to the Rotman panel' },
-    ];
-    return (
-      <div className="finder-content">
-        <div className="finder-toolbar">
-          <span>Gallery · everyday frames</span>
-          <span>{galleryItems.length} items</span>
-        </div>
-        <div className="gallery">
-          {galleryItems.map((item, i) => (
-            <div key={i} className="gallery-item">
-              <img src={item.src} alt={item.caption} />
-              <div className="gallery-caption">{item.caption}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <GalleryView />;
   }
 
   // About view — single file shortcut
@@ -320,54 +351,76 @@ function AboutDoc() {
   );
 }
 
-// ==================== NOW (what i'm up to) ====================
+// ==================== NOW (macOS Notes style) ====================
 function NowView() {
+  const { useState: useS } = React;
   const d = DATA();
   const n = d.now || {};
+  const [sel, setSel] = useS(0);
+
+  const notes = [
+    {
+      title: 'Currently Reading',
+      preview: (n.reading || [])[0]?.title || '',
+      content: (
+        <div>
+          {(n.reading || []).map((b, i) => (
+            <div key={i} className="notes-entry">
+              <div className="notes-entry-title">{b.title}</div>
+              {b.author && <div className="notes-entry-by">{b.author}</div>}
+              {b.note && <p className="notes-entry-note">{b.note}</p>}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: 'Currently Learning',
+      preview: (n.studying || [])[0]?.title || '',
+      content: (
+        <div>
+          {(n.studying || []).map((s, i) => (
+            <div key={i} className="notes-entry">
+              <div className="notes-entry-title">{s.title}</div>
+              {s.note && <p className="notes-entry-note">{s.note}</p>}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: 'Now Listening',
+      preview: (n.listening || []).join(', '),
+      content: (
+        <div className="notes-listening">
+          {(n.listening || []).map((l, i) => (
+            <div key={i} className="notes-track">{l}</div>
+          ))}
+        </div>
+      ),
+    },
+    ...(n.thinking ? [{
+      title: 'Turning Over',
+      preview: n.thinking.slice(0, 48) + (n.thinking.length > 48 ? '...' : ''),
+      content: <p className="notes-thinking">{n.thinking}</p>,
+    }] : []),
+  ];
+
   return (
-    <div className="now-doc">
-      <div className="now-head">
-        <div className="kicker">now · what i'm up to</div>
-        <h1>currently<em> living in</em></h1>
-        <div className="updated">last updated {n.updated || 'this week'}</div>
-      </div>
-
-      <div className="now-block">
-        <div className="now-label">currently reading</div>
-        {(n.reading || []).map((b, i) => (
-          <div key={i} className="now-card">
-            <div className="now-card-title">{b.title}</div>
-            <div className="now-card-by">{b.author}</div>
-            {b.note && <div className="now-card-note">{b.note}</div>}
+    <div className="notes-app">
+      <div className="notes-sidebar">
+        <div className="notes-sidebar-head">Notes</div>
+        {notes.map((note, i) => (
+          <div key={i} className={`notes-item ${sel === i ? 'active' : ''}`} onClick={() => setSel(i)}>
+            <div className="notes-item-title">{note.title}</div>
+            <div className="notes-item-preview">{note.preview}</div>
           </div>
         ))}
       </div>
-
-      <div className="now-block">
-        <div className="now-label">currently studying</div>
-        {(n.studying || []).map((s, i) => (
-          <div key={i} className="now-card">
-            <div className="now-card-title">{s.title}</div>
-            {s.note && <div className="now-card-note">{s.note}</div>}
-          </div>
-        ))}
+      <div className="notes-content">
+        <h2 className="notes-content-title">{notes[sel]?.title}</h2>
+        {notes[sel]?.content}
       </div>
-
-      {n.listening && (
-        <div className="now-block">
-          <div className="now-label">on rotation</div>
-          <div className="now-row">
-            {n.listening.map((l, i) => <span key={i} className="now-chip">{l}</span>)}
-          </div>
-        </div>
-      )}
-
-      {n.thinking && (
-        <div className="now-block">
-          <div className="now-label">turning over</div>
-          <p className="now-prose">{n.thinking}</p>
-        </div>
-      )}
     </div>
   );
 }
@@ -384,7 +437,7 @@ function LearningArchive() {
         A <em style={{ color: 'var(--oxblood)', fontWeight: 300 }}>working archive</em>
       </h1>
       <p style={{ color: 'var(--ink-faint)', fontSize: 13, lineHeight: 1.6, margin: '0 0 28px' }}>
-        Every project, thesis, and recognition that taught me something. Most recent first.
+        Every project, course, and competition that taught me something. Most recent first.
       </p>
 
       <div style={{ position: 'relative', paddingLeft: 20, borderLeft: '1px solid var(--paper-3)' }}>
@@ -426,5 +479,5 @@ function ResumeView() {
 }
 
 Object.assign(window, {
-  Icon, IndexCardHero, FinderSidebar, FinderContent, DocView, AboutDoc, LearningArchive, ResumeView, NowView,
+  Icon, IndexCardHero, FinderSidebar, FinderContent, GalleryView, DocView, AboutDoc, LearningArchive, ResumeView, NowView,
 });

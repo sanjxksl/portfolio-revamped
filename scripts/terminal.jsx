@@ -2,8 +2,7 @@
 // Terminal / Chatbot component — powered by Google Gemini API
 const { useState, useRef, useEffect } = React;
 
-// Get your free API key at https://aistudio.google.com/app/apikey
-const GEMINI_API_KEY = 'PASTE_NEW_KEY_HERE';
+const WORKER_URL = 'https://portfolio-revamped.sanjanakanchibotla.workers.dev';
 
 const SYSTEM_PROMPT = `You are Sanjana Kanchibotla's portfolio terminal assistant. You speak as her representative — warm, thoughtful, precise. Never verbose. Keep replies under 120 words. Use plain text, no markdown.
 
@@ -170,30 +169,18 @@ function Terminal({ onCommand }) {
 
   const askGemini = async (q) => {
     setThinking(true);
-    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
-      setThinking(false);
-      push([
-        { kind: 'err', text: "ai replies not configured yet." },
-        { kind: 'sys', text: "try the built-in commands: help, about, projects, work, skills, contact" },
-        { kind: 'sys', text: "" },
-      ]);
-      return;
-    }
     try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              role: 'user',
-              parts: [{ text: `${SYSTEM_PROMPT}\n\nVisitor asks: ${q}` }],
-            }],
-            generationConfig: { maxOutputTokens: 200, temperature: 0.7 },
-          }),
-        }
-      );
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            role: 'user',
+            parts: [{ text: `${SYSTEM_PROMPT}\n\nVisitor asks: ${q}` }],
+          }],
+          generationConfig: { maxOutputTokens: 200, temperature: 0.7 },
+        }),
+      });
       const data = await res.json();
       setThinking(false);
       if (!res.ok) {

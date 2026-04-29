@@ -81,6 +81,7 @@ function DisplayTitle() {
         <span className="designer">sanjana's</span>
         <span className="portfolio">portfolio</span>
         <span className="year">(2026)</span>
+        <span className="dt-subtitle">data scientist</span>
       </div>
     </>
   );
@@ -180,11 +181,14 @@ function ResumeIcon() {
   );
 }
 
-function NotionLikeIcon() {
+function NotesAppIcon() {
   return (
     <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <rect x="6" y="6" width="52" height="52" rx="9" fill="#f5efe1" stroke="#c9bda7" strokeWidth="1" />
-      <path d="M16 16 L16 48 L20 48 L20 24 L42 48 L48 48 L48 16 L44 16 L44 40 L22 16 Z" fill="#2b1e16" />
+      <rect x="4" y="4" width="56" height="56" rx="10" fill="#ffd426" />
+      <line x1="14" y1="21" x2="50" y2="21" stroke="#8a6300" strokeWidth="1.8" />
+      <line x1="14" y1="30" x2="50" y2="30" stroke="#8a6300" strokeWidth="1.8" />
+      <line x1="14" y1="39" x2="42" y2="39" stroke="#8a6300" strokeWidth="1.8" />
+      <line x1="14" y1="48" x2="34" y2="48" stroke="#8a6300" strokeWidth="1.8" />
     </svg>
   );
 }
@@ -284,7 +288,7 @@ function DesktopIcons({ onAction }) {
               {icon.kind === 'app-terminal' && <TerminalAppIcon />}
               {icon.kind === 'app-mail' && <MailAppIcon />}
               {icon.kind === 'app-github' && <GithubAppIcon />}
-              {icon.kind === 'notion' && <NotionLikeIcon />}
+              {icon.kind === 'notion' && <NotesAppIcon />}
             </div>
             <span className="label">{icon.label}</span>
           </div>
@@ -328,15 +332,14 @@ function Menubar({ activeApp }) {
 // ============================================================
 function Dock({ openApps, onLaunch }) {
   const items = [
-    { id: 'finder',   label: 'Finder',            render: () => <FolderIcon color="blue" /> },
-    { id: 'gallery',  label: 'Gallery',            render: () => <GalleryAppIcon />, galleryAction: true },
-    { id: 'learning', label: 'Learning',            render: () => <DocIcon /> },
+    { id: 'finder',   label: 'Finder',   render: () => <FolderIcon color="blue" /> },
+    { id: 'gallery',  label: 'Gallery',  render: () => <GalleryAppIcon />, galleryAction: true },
     { sep: true },
-    { id: 'terminal', label: 'ask me anything',    render: () => <TerminalAppIcon /> },
-    { id: 'resume',   label: 'Resume',              render: () => <ResumeIcon /> },
+    { id: 'terminal', label: 'Chat',     render: () => <TerminalAppIcon /> },
+    { id: 'resume',   label: 'Resume',   render: () => <ResumeIcon /> },
     { sep: true },
-    { id: 'mail',     label: 'get in touch',        render: () => <MailAppIcon />, href: 'mailto:sanjanakanchibotla@gmail.com' },
-    { id: 'github',   label: 'GitHub',              render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
+    { id: 'mail',     label: 'Contact',  render: () => <MailAppIcon />, href: 'mailto:sanjanakanchibotla@gmail.com' },
+    { id: 'github',   label: 'GitHub',   render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
   ];
   return (
     <div className="dock">
@@ -492,7 +495,7 @@ function App() {
       about:    { title: 'about.md',                        w: 660, h: 620, kind: 'about' },
       learning: { title: 'learning.log',                    w: 700, h: 600, kind: 'learning' },
       resume:   { title: 'resume.pdf',                      w: 720, h: 620, kind: 'resume' },
-      reading:  { title: 'now.txt',                          w: 580, h: 540, kind: 'reading' },
+      reading:  { title: 'now.txt',                          w: 720, h: 520, kind: 'reading' },
     };
     const s = specs[id];
     if (!s) return;
