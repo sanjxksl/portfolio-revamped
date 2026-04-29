@@ -3,7 +3,7 @@
 const { useState, useRef, useEffect } = React;
 
 // Get your free API key at https://aistudio.google.com/app/apikey
-const GEMINI_API_KEY = 'AIzaSyC_4NJ9Qz5VOFfWNEXIY3SZYtmYvTVvF-g';
+const GEMINI_API_KEY = 'PASTE_NEW_KEY_HERE';
 
 const SYSTEM_PROMPT = `You are Sanjana Kanchibotla's portfolio terminal assistant. You speak as her representative — warm, thoughtful, precise. Never verbose. Keep replies under 120 words. Use plain text, no markdown.
 
@@ -181,7 +181,7 @@ function Terminal({ onCommand }) {
     }
     try {
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -196,8 +196,17 @@ function Terminal({ onCommand }) {
       );
       const data = await res.json();
       setThinking(false);
+      if (!res.ok) {
+        const reason = data?.error?.message || `HTTP ${res.status}`;
+        push([
+          { kind: 'err', text: `api error: ${reason}` },
+          { kind: 'sys', text: "try: help · or email sanjanakanchibotla@gmail.com" },
+          { kind: 'sys', text: "" },
+        ]);
+        return;
+      }
       const text = (data?.candidates?.[0]?.content?.parts?.[0]?.text || "").trim();
-      if (!text) throw new Error('empty');
+      if (!text) throw new Error('empty response');
       const chunks = text.split(/\n+/).filter(Boolean);
       push([
         ...chunks.map((t) => ({ kind: 'assistant', text: t })),
@@ -206,7 +215,7 @@ function Terminal({ onCommand }) {
     } catch (e) {
       setThinking(false);
       push([
-        { kind: 'err', text: "couldn't reach the model right now." },
+        { kind: 'err', text: `error: ${e.message}` },
         { kind: 'sys', text: "try: help · or email sanjanakanchibotla@gmail.com" },
         { kind: 'sys', text: "" },
       ]);
