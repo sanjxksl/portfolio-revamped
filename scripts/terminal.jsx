@@ -181,10 +181,10 @@ function Terminal({ onCommand }) {
           generationConfig: { maxOutputTokens: 200, temperature: 0.7 },
         }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       setThinking(false);
       if (!res.ok) {
-        const reason = data?.error?.message || `HTTP ${res.status}`;
+        const reason = data?.error?.message || data?.error || `HTTP ${res.status}`;
         push([
           { kind: 'err', text: `api error: ${reason}` },
           { kind: 'sys', text: "try: help · or email sanjanakanchibotla@gmail.com" },
