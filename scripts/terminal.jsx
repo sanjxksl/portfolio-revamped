@@ -2,7 +2,7 @@
 // Terminal / Chatbot component — powered by Google Gemini API
 const { useState, useRef, useEffect } = React;
 
-const WORKER_URL = 'https://portfolio-revamped.sanjanakanchibotla.workers.dev';
+const WORKER_URL = 'https://groq-proxy.sanjanakanchibotla.workers.dev';
 
 const SYSTEM_PROMPT = `You are Sanjana Kanchibotla's portfolio terminal assistant. You speak as her representative — warm, thoughtful, precise. Never verbose. Keep replies under 120 words. Use plain text, no markdown.
 
