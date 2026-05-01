@@ -1,0 +1,254 @@
+/* ==========================================
+   WORK PAGE
+   Professional work experience display
+   ========================================== */
+
+#work {
+    padding: calc(var(--section-padding) + 80px) var(--container-padding) var(--section-padding);
+}
+
+.page-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 100px;
+}
+
+.page-header h1 {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    margin-bottom: 24px;
+    color: var(--espresso);
+}
+
+.page-header p {
+    font-size: 1.3rem;
+    color: var(--coffee);
+    font-style: italic;
+}
+
+/* Work Categories */
+.work-categories {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+
+.work-category {
+    position: relative;
+}
+
+.category-title {
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    margin-bottom: 50px;
+    color: var(--espresso);
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.category-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 2px;
+    background: var(--coffee);
+}
+
+/* Work List */
+.work-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 28px;
+    align-items: stretch;
+}
+
+.work-item {
+    background: var(--soft-beige);
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid rgba(139, 115, 85, 0.1);
+    transition: all 0.4s ease;
+    cursor: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
+.work-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: var(--coffee);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+}
+
+.work-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(60, 47, 35, 0.15);
+}
+
+.work-item:hover::before {
+    height: 4px;
+    width: 100%;
+}
+
+.work-item-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.work-item-header h3 {
+    font-size: 1.3rem;
+    color: var(--espresso);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.work-company {
+    font-size: 1rem;
+    color: var(--coffee);
+    font-weight: 500;
+}
+
+.work-date {
+    font-size: 0.9rem;
+    color: var(--dark-coffee);
+    opacity: 0.7;
+}
+
+.work-item p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--dark-coffee);
+    margin-bottom: 16px;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Work Tags */
+.work-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.work-tags span {
+    padding: 8px 16px;
+    background: rgba(139, 115, 85, 0.1);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--coffee);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.work-tags span:hover {
+    background: var(--coffee);
+    color: var(--cream);
+}
+
+/* View Details Link */
+.work-more {
+    font-size: 0.95rem;
+    color: var(--coffee);
+    font-weight: 500;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.work-item:hover .work-more {
+    opacity: 1;
+    color: var(--espresso);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #work {
+        padding: calc(var(--section-padding) + 60px) 20px var(--section-padding);
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .work-grid {
+        gap: 32px;
+    }
+
+    .work-item {
+        padding: 24px 20px;
+    }
+
+    .work-item-header h3 {
+        font-size: 1.3rem;
+        line-height: 1.3;
+    }
+
+    .work-company {
+        font-size: 1rem;
+    }
+
+    .work-date {
+        font-size: 0.85rem;
+    }
+
+    .work-item p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .work-tags {
+        gap: 10px;
+    }
+
+    .work-tags span {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #work {
+        padding: calc(var(--section-padding) + 60px) 16px var(--section-padding);
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .work-item {
+        padding: 20px 16px;
+    }
+
+    .work-item-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .work-company {
+        font-size: 0.95rem;
+    }
+
+    .work-item p {
+        font-size: 0.85rem;
+    }
+
+    .work-tags span {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+}
