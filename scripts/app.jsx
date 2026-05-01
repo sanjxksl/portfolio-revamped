@@ -246,13 +246,13 @@ function NotesAppIcon() {
 function getDefaultIcons() {
   return [
     { id: 'work',         label: 'work',         kind: 'folder', color: 'blue',  anchor_h:'left',  dx:10,  anchor_v:'top',    dy:20,  action: { type: 'finder', folder: 'work' } },
-    { id: 'notion',       label: 'Notes',        kind: 'notion',                 anchor_h:'left',  dx:110, anchor_v:'top',    dy:170, action: { type: 'reading' } },
+    { id: 'notion',       label: 'Notes',        kind: 'notion',                 anchor_h:'left',  dx:110, anchor_v:'top',    dy:130, action: { type: 'reading' } },
     { id: 'projects',     label: 'projects',     kind: 'folder', color: 'blue',  anchor_h:'right', dx:10,  anchor_v:'top',    dy:20,  action: { type: 'finder', folder: 'projects' } },
-    { id: 'headshot',     label: 'about.png',    kind: 'image', src: 'images/headshot.png', anchor_h:'left', dx:10, anchor_v:'top', dy:300, action: { type: 'about' } },
-    { id: 'github',       label: 'github',       kind: 'app-github',             anchor_h:'right', dx:10,  anchor_v:'top',    dy:200, action: { type: 'href', href: 'https://github.com/sanjxksl' } },
+    { id: 'headshot',     label: 'about.png',    kind: 'image', src: 'images/headshot.png', anchor_h:'left', dx:10, anchor_v:'bottom', dy:220, action: { type: 'about' } },
+    { id: 'github',       label: 'github',       kind: 'app-github',             anchor_h:'right', dx:10,  anchor_v:'top',    dy:160, action: { type: 'href', href: 'https://github.com/sanjxksl' } },
     { id: 'competitions', label: 'competitions', kind: 'folder', color: 'peony', anchor_h:'left',  dx:110, anchor_v:'bottom', dy:30,  action: { type: 'finder', folder: 'competitions' } },
     { id: 'learning',     label: 'learning.log', kind: 'doc',                    anchor_h:'right', dx:10,  anchor_v:'bottom', dy:30,  action: { type: 'launch', id: 'learning' } },
-    { id: 'resume',       label: 'resume.pdf',   kind: 'resume',                 anchor_h:'right', dx:10,  anchor_v:'top',    dy:380, action: { type: 'launch', id: 'resume' } },
+    { id: 'resume',       label: 'resume.pdf',   kind: 'resume',                 anchor_h:'right', dx:10,  anchor_v:'bottom', dy:150, action: { type: 'launch', id: 'resume' } },
   ];
 }
 
