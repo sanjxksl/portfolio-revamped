@@ -262,7 +262,7 @@ function LearningLogIcon() {
 function getDefaultIcons() {
   return [
     { id: 'work',         label: 'work',         kind: 'folder', color: 'blue',  anchor_h:'left', dx:32,   anchor_v:'top', dy:77,  action: { type: 'finder', folder: 'work' } },
-    { id: 'notion',       label: 'Notes',        kind: 'notion',                 anchor_h:'left', dx:153,  anchor_v:'top', dy:320, action: { type: 'reading' } },
+    { id: 'notion',       label: 'Notes',        kind: 'notion',                 anchor_h:'left', dx:1153, anchor_v:'top', dy:113, action: { type: 'reading' } },
     { id: 'projects',     label: 'projects',     kind: 'folder', color: 'blue',  anchor_h:'left', dx:149,  anchor_v:'top', dy:80,  action: { type: 'finder', folder: 'projects' } },
     { id: 'headshot',     label: 'about.png',    kind: 'image', src: 'images/headshot.png', anchor_h:'left', dx:35, anchor_v:'top', dy:186, action: { type: 'about' } },
     { id: 'github',       label: 'github',       kind: 'app-github',             anchor_h:'left', dx:1062, anchor_v:'top', dy:114, action: { type: 'href', href: 'https://github.com/sanjxksl' } },
@@ -328,8 +328,6 @@ function DesktopIcons({ onAction }) {
     return () => window.removeEventListener('mousedown', onClick);
   }, []);
 
-  // Temp: expose icon drag state for console capture
-  useEffect(() => { window.__iconPos = pos; }, [pos]);
 
 
   return (
@@ -392,38 +390,6 @@ function Menubar({ activeApp }) {
 // Dock
 // ============================================================
 function Dock({ openApps, onLaunch }) {
-  const [pos, setPos] = useState(null);
-  const dragRef = useRef(null);
-  const dockRef = useRef(null);
-
-  // Temp: expose dock position for console capture
-  useEffect(() => { window.__dockPos = pos; }, [pos]);
-
-  const onDockMouseDown = (e) => {
-    if (e.target.closest('.dock-item') || e.target.closest('.dock-sep')) return;
-    const rect = dockRef.current.getBoundingClientRect();
-    dragRef.current = { ox: rect.left + rect.width / 2, oy: rect.top, mx: e.clientX, my: e.clientY };
-    const move = (ev) => {
-      const d = dragRef.current;
-      const cx = d.ox + (ev.clientX - d.mx);
-      const cy = d.oy + (ev.clientY - d.my);
-      const p = { x: Math.round(cx), y: Math.round(cy) };
-      setPos(p);
-      window.__dockPos = p;
-    };
-    const up = () => {
-      dragRef.current = null;
-      window.removeEventListener('mousemove', move);
-      window.removeEventListener('mouseup', up);
-    };
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseup', up);
-  };
-
-  const dockStyle = pos
-    ? { left: pos.x, top: pos.y, bottom: 'auto', transform: 'translateX(-50%)' }
-    : {};
-
   const items = [
     { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
     { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
@@ -435,7 +401,7 @@ function Dock({ openApps, onLaunch }) {
     { id: 'github',   label: 'GitHub',   render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
   ];
   return (
-    <div className="dock" ref={dockRef} style={dockStyle} onMouseDown={onDockMouseDown}>
+    <div className="dock">
       {items.map((it, i) => {
         if (it.sep) return <div key={i} className="dock-sep" />;
         const isOpen = openApps.includes(it.id);
@@ -569,14 +535,10 @@ function App() {
   // Auto-open terminal as a widget after boot
   useEffect(() => {
     if (!booted) return;
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const w = 500, h = 270;
     wm.openWindow({
       id: 'terminal',
       title: 'Terminal — guest@portfolio.os',
-      x: Math.round(vw * 0.52),
-      y: Math.round(vh * 0.50),
-      w, h,
+      x: 946, y: 417, w: 452, h: 256,
       kind: 'terminal',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -654,9 +616,6 @@ function App() {
       window.open(action.href, action.href.startsWith('http') ? '_blank' : '_self');
     }
   }, [launch]);
-
-  // Temp: expose window positions for console capture
-  useEffect(() => { window.__windows = wm.windows; }, [wm.windows]);
 
   const openApps = wm.windows.filter((w) => !w.minimized).map((w) => w.id);
   const focused = wm.windows.find((w) => w.id === wm.focusId);

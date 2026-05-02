@@ -301,7 +301,7 @@ img { display: block; }
 /* ---------- Dock (macOS glass) ---------- */
 .dock {
   position: fixed;
-  bottom: 30px; left: 50%;
+  top: 691px; left: 739px; bottom: auto;
   transform: translateX(-50%);
   display: flex; align-items: flex-end; gap: 8px;
   padding: 10px 14px 12px;
