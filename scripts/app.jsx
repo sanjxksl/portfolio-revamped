@@ -409,7 +409,7 @@ function Dock({ openApps, onLaunch }) {
     { id: 'resume',   label: 'Resume',          render: () => <ResumeIcon /> },
     { sep: true },
     { id: 'mail',     label: 'Contact',    render: () => <MailAppIcon />,     href: 'mailto:sanjanakanchibotla@gmail.com' },
-    { id: 'linkedin', label: 'LinkedIn',   render: () => <img src="assets/linkedin.png" alt="LinkedIn" />, href: 'https://linkedin.com/in/sanjanaksl' },
+    { id: 'linkedin', label: 'LinkedIn',   render: () => <img src="assets/linkedin.png" alt="LinkedIn" style={{ width: 42, height: 42 }} />, href: 'https://linkedin.com/in/sanjanaksl' },
     { id: 'github',   label: 'GitHub',     render: () => <GithubAppIcon />,   href: 'https://github.com/sanjxksl' },
   ];
   return (
