@@ -319,6 +319,7 @@ function DesktopIcons({ onAction }) {
         <div
           key={icon.id}
           className={`di ${selected === icon.id ? 'selected' : ''}`}
+          data-icon-id={icon.id}
           style={getIconStyle(icon)}
           onMouseDown={(e) => handleDragStart(e, icon)}
           onDoubleClick={() => handleDoubleClick(icon)}
