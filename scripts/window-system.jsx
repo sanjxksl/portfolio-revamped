@@ -51,7 +51,7 @@ function useWindowManager() {
   return { windows, focusId, openWindow, closeWindow, minimizeWindow, focusWindow, updateWindow };
 }
 
-function Window({ win, onClose, onMinimize, onFocus, onMove, focused, children }) {
+function Window({ win, onClose, onMinimize, onFocus, onMove, onResize, focused, children }) {
   const ref = useRef(null);
   const dragState = useRef(null);
 
@@ -118,6 +118,26 @@ function Window({ win, onClose, onMinimize, onFocus, onMove, focused, children }
         <div className="title">{win.title}</div>
       </div>
       <div className="window-body">{children}</div>
+      <div
+        className="window-resize"
+        onMouseDown={(e) => {
+          e.stopPropagation();
+          const startX = e.clientX, startY = e.clientY;
+          const startW = win.w, startH = win.h;
+          const move = (ev) => {
+            onResize({
+              w: Math.max(320, startW + ev.clientX - startX),
+              h: Math.max(200, startH + ev.clientY - startY),
+            });
+          };
+          const up = () => {
+            window.removeEventListener('mousemove', move);
+            window.removeEventListener('mouseup', up);
+          };
+          window.addEventListener('mousemove', move);
+          window.addEventListener('mouseup', up);
+        }}
+      />
     </div>
   );
 }

@@ -684,6 +684,7 @@ function App() {
           onMinimize={() => wm.minimizeWindow(w.id)}
           onFocus={() => wm.focusWindow(w.id)}
           onMove={(p) => wm.updateWindow(w.id, p)}
+          onResize={(s) => wm.updateWindow(w.id, s)}
         >
           {w.kind === 'finder' && (
             <div className="finder">
