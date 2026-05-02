@@ -22,7 +22,7 @@ Rules:
 
 function Terminal({ onCommand }) {
   const [lines, setLines] = useState([
-    { kind: 'sys', text: "sanjana.os 4.0 · portfolio terminal" },
+    { kind: 'sys', text: "sanjana.os 4.0 · Chatbot" },
     { kind: 'sys', text: "type 'help' for commands · or ask anything in plain english" },
     { kind: 'sys', text: "" },
   ]);

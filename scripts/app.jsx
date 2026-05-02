@@ -404,6 +404,8 @@ function Dock({ openApps, onLaunch }) {
   const items = [
     { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
     { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
+    { id: 'reading',  label: 'Notes',         render: () => <NotesAppIcon /> },
+    { id: 'learning', label: 'Logs',          render: () => <LearningLogIcon /> },
     { sep: true },
     { id: 'terminal', label: 'Ask Me Anything', render: () => <TerminalAppIcon /> },
     { id: 'resume',   label: 'Resume',          render: () => <ResumeIcon /> },
@@ -416,7 +418,9 @@ function Dock({ openApps, onLaunch }) {
     <div className="dock">
       {items.map((it, i) => {
         if (it.sep) return <div key={i} className="dock-sep" />;
-        const isOpen = openApps.includes(it.id);
+        const isOpen = it.id === 'finder'
+          ? openApps.some(id => id === 'finder' || id === 'about' || id.startsWith('doc-'))
+          : openApps.includes(it.id);
         const inner = (<>
           {it.render()}
           <span className="tip">{it.label}</span>
