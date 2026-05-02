@@ -215,6 +215,17 @@ function GithubAppIcon() {
   );
 }
 
+function LinkedInAppIcon() {
+  return (
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="56" height="56" rx="10" fill="#0a66c2" />
+      <rect x="13" y="19" width="9" height="9" rx="2" fill="white" />
+      <rect x="13" y="31" width="9" height="16" fill="white" />
+      <path d="M26 31h8v3.5c1.5-2.8 4.5-4.5 8-4.5 5.5 0 8 3.5 8 9.5V47h-8v-6.5c0-2.5-1-4-3.5-4s-4.5 1.5-4.5 4.5V47h-8V31z" fill="white" />
+    </svg>
+  );
+}
+
 function ResumeIcon() {
   return (
     <svg viewBox="0 0 64 56" xmlns="http://www.w3.org/2000/svg">
@@ -394,11 +405,13 @@ function Dock({ openApps, onLaunch }) {
     { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
     { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
     { sep: true },
-    { id: 'learning', label: 'Logs',           render: () => <LearningLogIcon /> },
-    { id: 'resume',   label: 'Resume',        render: () => <ResumeIcon /> },
+    { id: 'learning', label: 'Logs',             render: () => <LearningLogIcon /> },
+    { id: 'terminal', label: 'Ask Me Anything', render: () => <TerminalAppIcon /> },
+    { id: 'resume',   label: 'Resume',          render: () => <ResumeIcon /> },
     { sep: true },
-    { id: 'mail',     label: 'Contact',  render: () => <MailAppIcon />, href: 'mailto:sanjanakanchibotla@gmail.com' },
-    { id: 'github',   label: 'GitHub',   render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
+    { id: 'mail',     label: 'Contact',    render: () => <MailAppIcon />,     href: 'mailto:sanjanakanchibotla@gmail.com' },
+    { id: 'linkedin', label: 'LinkedIn',   render: () => <LinkedInAppIcon />, href: 'https://linkedin.com/in/sanjanaksl' },
+    { id: 'github',   label: 'GitHub',     render: () => <GithubAppIcon />,   href: 'https://github.com/sanjxksl' },
   ];
   return (
     <div className="dock">
