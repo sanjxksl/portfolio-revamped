@@ -301,10 +301,10 @@ img { display: block; }
 /* ---------- Dock (macOS glass) ---------- */
 .dock {
   position: fixed;
-  bottom: 22px; left: 50%;
+  bottom: 30px; left: 50%;
   transform: translateX(-50%);
-  display: flex; align-items: flex-end; gap: 6px;
-  padding: 8px 10px 10px;
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 10px 14px 12px;
   background: linear-gradient(
     180deg,
     rgba(255, 250, 240, 0.45) 0%,
@@ -337,16 +337,16 @@ img { display: block; }
 }
 .dock-item {
   position: relative;
-  width: 52px; height: 52px;
+  width: 60px; height: 60px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 12px;
+  border-radius: 14px;
   transition: transform 0.18s cubic-bezier(.2,.8,.2,1);
   transform-origin: 50% 100%;
 }
 .dock-item:hover { transform: translateY(-8px) scale(1.18); }
 .dock-item:hover ~ .dock-item:not(:hover) { transform: scale(1.04); }
 .dock-item svg, .dock-item img {
-  width: 44px; height: 44px;
+  width: 52px; height: 52px;
   filter: drop-shadow(0 2px 4px rgba(43, 30, 22, 0.18));
 }
 .dock-item.open::after {

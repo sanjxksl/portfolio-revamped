@@ -240,6 +240,22 @@ function NotesAppIcon() {
   );
 }
 
+function LearningLogIcon() {
+  return (
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="56" height="56" rx="8" fill="#1a1410" />
+      <rect x="4" y="4" width="56" height="14" rx="8" fill="#3d2c20" />
+      <rect x="4" y="12" width="56" height="6" fill="#3d2c20" />
+      <circle cx="12" cy="11" r="2" fill="#ec6a5e" />
+      <circle cx="19" cy="11" r="2" fill="#f4bf4f" />
+      <circle cx="26" cy="11" r="2" fill="#62c454" />
+      <text x="10" y="29" fill="#d68aa3" fontFamily="monospace" fontSize="6.5" fontWeight="600">* a1f9d02 QUANT</text>
+      <text x="10" y="39" fill="#7a6552" fontFamily="monospace" fontSize="6.5">* b3c1e77 MLOPS</text>
+      <text x="10" y="49" fill="#7a6552" fontFamily="monospace" fontSize="6.5">* 7a2c19f PROD</text>
+    </svg>
+  );
+}
+
 // Default desktop icons & positions (percent-based for responsiveness)
 // anchor_h: 'left'|'right'  anchor_v: 'top'|'bottom'
 // dx/dy: px from that edge of the .desktop-icons container
@@ -251,7 +267,6 @@ function getDefaultIcons() {
     { id: 'headshot',     label: 'about.png',    kind: 'image', src: 'images/headshot.png', anchor_h:'left', dx:35, anchor_v:'top', dy:186, action: { type: 'about' } },
     { id: 'github',       label: 'github',       kind: 'app-github',             anchor_h:'left', dx:1062, anchor_v:'top', dy:114, action: { type: 'href', href: 'https://github.com/sanjxksl' } },
     { id: 'competitions', label: 'competitions', kind: 'folder', color: 'peony', anchor_h:'left', dx:34,   anchor_v:'top', dy:319, action: { type: 'finder', folder: 'competitions' } },
-    { id: 'learning',     label: 'learning.log', kind: 'doc',                    anchor_h:'left', dx:420,  anchor_v:'top', dy:488, action: { type: 'launch', id: 'learning' } },
     { id: 'resume',       label: 'resume.pdf',   kind: 'resume',                 anchor_h:'left', dx:148,  anchor_v:'top', dy:191, action: { type: 'launch', id: 'resume' } },
   ];
 }
@@ -375,11 +390,11 @@ function Menubar({ activeApp }) {
 // ============================================================
 function Dock({ openApps, onLaunch }) {
   const items = [
-    { id: 'finder',   label: 'Finder',   render: () => <FinderAppIcon /> },
-    { id: 'gallery',  label: 'Gallery',  render: () => <GalleryAppIcon />, galleryAction: true },
+    { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
+    { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
     { sep: true },
-    { id: 'terminal', label: 'Ask Me Anything',     render: () => <TerminalAppIcon /> },
-    { id: 'resume',   label: 'Resume',   render: () => <ResumeIcon /> },
+    { id: 'learning', label: 'learning.log',  render: () => <LearningLogIcon /> },
+    { id: 'resume',   label: 'Resume',        render: () => <ResumeIcon /> },
     { sep: true },
     { id: 'mail',     label: 'Contact',  render: () => <MailAppIcon />, href: 'mailto:sanjanakanchibotla@gmail.com' },
     { id: 'github',   label: 'GitHub',   render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
@@ -515,6 +530,22 @@ function App() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  // Auto-open terminal as a widget after boot
+  useEffect(() => {
+    if (!booted) return;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const w = 500, h = 270;
+    wm.openWindow({
+      id: 'terminal',
+      title: 'Terminal — guest@portfolio.os',
+      x: Math.round(vw * 0.52),
+      y: Math.round(vh * 0.50),
+      w, h,
+      kind: 'terminal',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [booted]);
 
   // Tag click events
   useEffect(() => {
