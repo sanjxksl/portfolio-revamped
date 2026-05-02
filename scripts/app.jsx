@@ -389,6 +389,38 @@ function Menubar({ activeApp }) {
 // Dock
 // ============================================================
 function Dock({ openApps, onLaunch }) {
+  const [pos, setPos] = useState(null);
+  const dragRef = useRef(null);
+  const dockRef = useRef(null);
+
+  // Temp: expose dock position for console capture
+  useEffect(() => { window.__dockPos = pos; }, [pos]);
+
+  const onDockMouseDown = (e) => {
+    if (e.target.closest('.dock-item') || e.target.closest('.dock-sep')) return;
+    const rect = dockRef.current.getBoundingClientRect();
+    dragRef.current = { ox: rect.left + rect.width / 2, oy: rect.top, mx: e.clientX, my: e.clientY };
+    const move = (ev) => {
+      const d = dragRef.current;
+      const cx = d.ox + (ev.clientX - d.mx);
+      const cy = d.oy + (ev.clientY - d.my);
+      const p = { x: Math.round(cx), y: Math.round(cy) };
+      setPos(p);
+      window.__dockPos = p;
+    };
+    const up = () => {
+      dragRef.current = null;
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  const dockStyle = pos
+    ? { left: pos.x, top: pos.y, bottom: 'auto', transform: 'translateX(-50%)' }
+    : {};
+
   const items = [
     { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
     { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
@@ -400,7 +432,7 @@ function Dock({ openApps, onLaunch }) {
     { id: 'github',   label: 'GitHub',   render: () => <GithubAppIcon />, href: 'https://github.com/sanjxksl' },
   ];
   return (
-    <div className="dock">
+    <div className="dock" ref={dockRef} style={dockStyle} onMouseDown={onDockMouseDown}>
       {items.map((it, i) => {
         if (it.sep) return <div key={i} className="dock-sep" />;
         const isOpen = openApps.includes(it.id);
