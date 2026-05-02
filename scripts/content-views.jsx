@@ -117,12 +117,12 @@ function FinderSidebar({ activeFolder, onOpenFolder, activeTag, onOpenTag }) {
   );
 }
 
-// ==================== GALLERY CAROUSEL ====================
+// ==================== GALLERY GRID + LIGHTBOX ====================
 function GalleryView() {
-  const { useState: useS, useEffect: useE, useRef: useR } = React;
+  const { useState: useS, useEffect: useE, useCallback: useC } = React;
   const captions = DATA().gallery || [];
   const [images, setImages] = useS([]);
-  const [idx, setIdx] = useS(0);
+  const [lightbox, setLightbox] = useS(null); // index or null
 
   useE(() => {
     const found = [];
@@ -142,6 +142,20 @@ function GalleryView() {
     tryNext();
   }, []);
 
+  const prev = useC(() => setLightbox((n) => (n - 1 + images.length) % images.length), [images.length]);
+  const next = useC(() => setLightbox((n) => (n + 1) % images.length), [images.length]);
+
+  useE(() => {
+    if (lightbox === null) return;
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft') prev();
+      else if (e.key === 'ArrowRight') next();
+      else if (e.key === 'Escape') setLightbox(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightbox, prev, next]);
+
   if (!images.length) {
     return (
       <div className="finder-content">
@@ -151,24 +165,34 @@ function GalleryView() {
     );
   }
 
-  const prev = () => setIdx((idx - 1 + images.length) % images.length);
-  const next = () => setIdx((idx + 1) % images.length);
-  const cur = images[idx];
-
   return (
     <div className="finder-content" style={{ display: 'flex', flexDirection: 'column' }}>
       <div className="finder-toolbar">
         <span>Gallery · everyday frames</span>
-        <span>{idx + 1} of {images.length}</span>
+        <span>{images.length} photos</span>
       </div>
-      <div className="gallery-carousel">
-        <button className="gallery-nav" onClick={prev}>&#8249;</button>
-        <div className="gallery-stage">
-          <img key={cur.src} src={cur.src} alt={cur.caption} />
-          <div className="gallery-caption">{cur.caption}</div>
+      <div className="gallery-grid">
+        {images.map((img, i) => (
+          <div key={img.src} className="gallery-thumb" onClick={() => setLightbox(i)}>
+            <img src={img.src} alt={img.caption} />
+          </div>
+        ))}
+      </div>
+
+      {lightbox !== null && (
+        <div className="gallery-lightbox" onClick={() => setLightbox(null)}>
+          <button className="gallery-lb-close" onClick={(e) => { e.stopPropagation(); setLightbox(null); }}>×</button>
+          <button className="gallery-lb-nav gallery-lb-prev" onClick={(e) => { e.stopPropagation(); prev(); }}>&#8249;</button>
+          <div className="gallery-lb-stage" onClick={(e) => e.stopPropagation()}>
+            <img src={images[lightbox].src} alt={images[lightbox].caption} />
+            <div className="gallery-lb-caption">
+              <span className="gallery-lb-num">{lightbox + 1} / {images.length}</span>
+              {images[lightbox].caption}
+            </div>
+          </div>
+          <button className="gallery-lb-nav gallery-lb-next" onClick={(e) => { e.stopPropagation(); next(); }}>&#8250;</button>
         </div>
-        <button className="gallery-nav" onClick={next}>&#8250;</button>
-      </div>
+      )}
     </div>
   );
 }
@@ -312,6 +336,17 @@ function DocView({ item }) {
               ))}
             </div>
           )
+      )}
+
+      {item.arch && (
+        <div className="arch-diagram">
+          {item.arch.map((step, i) => (
+            <React.Fragment key={i}>
+              <div className="arch-node">{step}</div>
+              {i < item.arch.length - 1 && <div className="arch-arrow">›</div>}
+            </React.Fragment>
+          ))}
+        </div>
       )}
 
       {window.ProjectDiagram && <window.ProjectDiagram id={item.id} />}

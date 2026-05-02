@@ -574,11 +574,9 @@ function App() {
   const handleIconAction = useCallback((action) => {
     if (!action) return;
     if (action.type === 'finder') {
-      setFolderOpen(action.folder); setActiveTag(null);
-      launch('finder');
+      launch('finder', action.folder);
     } else if (action.type === 'gallery') {
-      setFolderOpen('gallery'); setActiveTag(null);
-      launch('finder');
+      launch('finder', 'gallery');
     } else if (action.type === 'about') {
       launch('about');
     } else if (action.type === 'reading') {
