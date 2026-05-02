@@ -143,7 +143,7 @@ function GalleryAppIcon() {
     { a: 270,  f: '#10b981' }, // teal
     { a: 315,  f: '#84cc16' }, // green
   ];
-  const cx = 32, cy = 32, r1 = 9, r2 = 22, w = 12;
+  const cx = 32, cy = 32, r1 = 11, r2 = 27, w = 15;
   return (
     <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -400,12 +400,16 @@ function Menubar({ activeApp }) {
 // ============================================================
 // Dock
 // ============================================================
-function Dock({ openApps, onLaunch }) {
+// Apps that appear in the dock only while their window is open
+const DYNAMIC_DOCK = {
+  reading: { label: 'Notes',  render: () => <NotesAppIcon /> },
+  learning: { label: 'Logs',  render: () => <LearningLogIcon /> },
+};
+
+function Dock({ openApps, windows, onLaunch }) {
   const items = [
     { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
     { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
-    { id: 'reading',  label: 'Notes',         render: () => <NotesAppIcon /> },
-    { id: 'learning', label: 'Logs',          render: () => <LearningLogIcon /> },
     { sep: true },
     { id: 'terminal', label: 'Ask Me Anything', render: () => <TerminalAppIcon /> },
     { id: 'resume',   label: 'Resume',          render: () => <ResumeIcon /> },
@@ -414,37 +418,37 @@ function Dock({ openApps, onLaunch }) {
     { id: 'linkedin', label: 'LinkedIn',   render: () => <img src="assets/linkedin.png" alt="LinkedIn" style={{ width: 42, height: 42 }} />, href: 'https://linkedin.com/in/sanjanaksl' },
     { id: 'github',   label: 'GitHub',     render: () => <GithubAppIcon />,   href: 'https://github.com/sanjxksl' },
   ];
+
+  // Dynamic items: only visible while their window is open
+  const dynamicItems = Object.entries(DYNAMIC_DOCK)
+    .filter(([id]) => windows.some((w) => w.id === id))
+    .map(([id, cfg]) => ({ id, ...cfg }));
+
   return (
     <div className="dock">
       {items.map((it, i) => {
-        if (it.sep) return <div key={i} className="dock-sep" />;
+        if (it.sep) return <div key={`sep-${i}`} className="dock-sep" />;
         const isOpen = it.id === 'finder'
           ? openApps.some(id => id === 'finder' || id === 'about' || id.startsWith('doc-'))
           : openApps.includes(it.id);
-        const inner = (<>
-          {it.render()}
-          <span className="tip">{it.label}</span>
-        </>);
-        if (it.href) {
-          return (
-            <a key={it.id} href={it.href} target={it.href.startsWith('http') ? '_blank' : undefined} rel="noopener" className="dock-item">
-              {inner}
-            </a>
-          );
-        }
-        if (it.galleryAction) {
-          return (
-            <div key={it.id} className={`dock-item ${isOpen ? 'open' : ''}`} onClick={() => onLaunch('finder', 'gallery')}>
-              {inner}
-            </div>
-          );
-        }
+        const inner = (<>{it.render()}<span className="tip">{it.label}</span></>);
+        if (it.href) return (
+          <a key={it.id} href={it.href} target={it.href.startsWith('http') ? '_blank' : undefined} rel="noopener" className="dock-item">{inner}</a>
+        );
+        if (it.galleryAction) return (
+          <div key={it.id} className={`dock-item ${isOpen ? 'open' : ''}`} onClick={() => onLaunch('finder', 'gallery')}>{inner}</div>
+        );
         return (
-          <div key={it.id} className={`dock-item ${isOpen ? 'open' : ''}`} onClick={() => onLaunch(it.id)}>
-            {inner}
-          </div>
+          <div key={it.id} className={`dock-item ${isOpen ? 'open' : ''}`} onClick={() => onLaunch(it.id)}>{inner}</div>
         );
       })}
+      {dynamicItems.length > 0 && <div className="dock-sep" />}
+      {dynamicItems.map((it) => (
+        <div key={it.id} className="dock-item open" onClick={() => onLaunch(it.id)}>
+          {it.render()}
+          <span className="tip">{it.label}</span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -696,7 +700,7 @@ function App() {
         </Window>
       ))}
 
-      <Dock openApps={openApps} onLaunch={launch} />
+      <Dock openApps={openApps} windows={wm.windows} onLaunch={launch} />
 
       <Spotlight
         open={spotOpen}
