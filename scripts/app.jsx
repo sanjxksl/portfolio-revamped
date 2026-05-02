@@ -276,7 +276,7 @@ function getDefaultIcons() {
     { id: 'notion',       label: 'Notes',        kind: 'notion',                 anchor_h:'left', dx:1153, anchor_v:'top', dy:113, action: { type: 'reading' } },
     { id: 'projects',     label: 'projects',     kind: 'folder', color: 'blue',  anchor_h:'left', dx:149,  anchor_v:'top', dy:80,  action: { type: 'finder', folder: 'projects' } },
     { id: 'headshot',     label: 'about.png',    kind: 'image', src: 'images/headshot.png', anchor_h:'left', dx:35, anchor_v:'top', dy:186, action: { type: 'about' } },
-    { id: 'github',       label: 'github',       kind: 'app-github',             anchor_h:'left', dx:1062, anchor_v:'top', dy:114, action: { type: 'href', href: 'https://github.com/sanjxksl' } },
+    { id: 'learning',     label: 'learning.log', kind: 'doc',                    anchor_h:'left', dx:1062, anchor_v:'top', dy:114, action: { type: 'launch', id: 'learning' } },
     { id: 'competitions', label: 'competitions', kind: 'folder', color: 'peony', anchor_h:'left', dx:34,   anchor_v:'top', dy:319, action: { type: 'finder', folder: 'competitions' } },
     { id: 'resume',       label: 'resume.pdf',   kind: 'resume',                 anchor_h:'left', dx:148,  anchor_v:'top', dy:191, action: { type: 'launch', id: 'resume' } },
   ];
@@ -405,7 +405,6 @@ function Dock({ openApps, onLaunch }) {
     { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
     { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
     { sep: true },
-    { id: 'learning', label: 'Logs',             render: () => <LearningLogIcon /> },
     { id: 'terminal', label: 'Ask Me Anything', render: () => <TerminalAppIcon /> },
     { id: 'resume',   label: 'Resume',          render: () => <ResumeIcon /> },
     { sep: true },
