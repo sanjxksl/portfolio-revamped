@@ -242,16 +242,16 @@ function NotesAppIcon() {
 
 function LearningLogIcon() {
   return (
-    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <rect x="4" y="4" width="56" height="56" rx="8" fill="#1a1410" />
-      <rect x="4" y="4" width="56" height="14" rx="8" fill="#3d2c20" />
-      <rect x="4" y="12" width="56" height="6" fill="#3d2c20" />
-      <circle cx="12" cy="11" r="2" fill="#ec6a5e" />
-      <circle cx="19" cy="11" r="2" fill="#f4bf4f" />
-      <circle cx="26" cy="11" r="2" fill="#62c454" />
-      <text x="10" y="29" fill="#d68aa3" fontFamily="monospace" fontSize="6.5" fontWeight="600">* a1f9d02 QUANT</text>
-      <text x="10" y="39" fill="#7a6552" fontFamily="monospace" fontSize="6.5">* b3c1e77 MLOPS</text>
-      <text x="10" y="49" fill="#7a6552" fontFamily="monospace" fontSize="6.5">* 7a2c19f PROD</text>
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" overflow="hidden">
+      <rect x="0" y="0" width="64" height="64" rx="8" fill="#1a1410" />
+      <rect x="0" y="0" width="64" height="16" rx="8" fill="#3d2c20" />
+      <rect x="0" y="10" width="64" height="6" fill="#3d2c20" />
+      <circle cx="11" cy="9" r="2" fill="#ec6a5e" />
+      <circle cx="18" cy="9" r="2" fill="#f4bf4f" />
+      <circle cx="25" cy="9" r="2" fill="#62c454" />
+      <text x="7" y="29" fill="#d68aa3" fontFamily="monospace" fontSize="6" fontWeight="600">* a1f9d  QUANT</text>
+      <text x="7" y="39" fill="#7a6552" fontFamily="monospace" fontSize="6">* b3c1e  MLOPS</text>
+      <text x="7" y="49" fill="#7a6552" fontFamily="monospace" fontSize="6">* 7a2c1  PROD</text>
     </svg>
   );
 }
