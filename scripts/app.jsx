@@ -328,6 +328,9 @@ function DesktopIcons({ onAction }) {
     return () => window.removeEventListener('mousedown', onClick);
   }, []);
 
+  // Temp: expose icon drag state for console capture
+  useEffect(() => { window.__iconPos = pos; }, [pos]);
+
 
   return (
     <div className="desktop-icons">
