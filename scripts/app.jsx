@@ -393,7 +393,7 @@ function Dock({ openApps, onLaunch }) {
     { id: 'finder',   label: 'Finder',        render: () => <FinderAppIcon /> },
     { id: 'gallery',  label: 'Gallery',       render: () => <GalleryAppIcon />, galleryAction: true },
     { sep: true },
-    { id: 'learning', label: 'learning.log',  render: () => <LearningLogIcon /> },
+    { id: 'learning', label: 'Logs',           render: () => <LearningLogIcon /> },
     { id: 'resume',   label: 'Resume',        render: () => <ResumeIcon /> },
     { sep: true },
     { id: 'mail',     label: 'Contact',  render: () => <MailAppIcon />, href: 'mailto:sanjanakanchibotla@gmail.com' },
@@ -619,6 +619,9 @@ function App() {
       window.open(action.href, action.href.startsWith('http') ? '_blank' : '_self');
     }
   }, [launch]);
+
+  // Temp: expose window positions for console capture
+  useEffect(() => { window.__windows = wm.windows; }, [wm.windows]);
 
   const openApps = wm.windows.filter((w) => !w.minimized).map((w) => w.id);
   const focused = wm.windows.find((w) => w.id === wm.focusId);
