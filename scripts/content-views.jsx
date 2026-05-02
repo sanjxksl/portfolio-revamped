@@ -323,6 +323,13 @@ function DocView({ item }) {
       <h1 dangerouslySetInnerHTML={{ __html: item.title }} />
       {item.subtitle && <div className="subtitle">{item.subtitle}</div>}
 
+      {item.links?.github && (
+        <a href={item.links.github} target="_blank" rel="noopener noreferrer" className="doc-github-link">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          {item.links.github.replace('https://github.com/', '')}
+        </a>
+      )}
+
       {item.metrics && (
         window.MetricStrip
           ? <window.MetricStrip items={item.metrics} />
@@ -373,21 +380,12 @@ function DocView({ item }) {
         </div>
       )}
 
-      {item.links && (item.links.github || item.links.tableau) && (
-        <div className="project-links" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', margin: '24px 0 16px' }}>
-          {item.links.github && (
-            <a href={item.links.github} target="_blank" rel="noopener noreferrer"
-               style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', border: '1px solid var(--ink)', borderRadius: 3, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--ink)', textDecoration: 'none', background: 'var(--paper)' }}>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-              GitHub
-            </a>
-          )}
-          {item.links.tableau && !item.tableauPath && (
-            <a href={item.links.tableau} target="_blank" rel="noopener noreferrer"
-               style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', border: '1px solid var(--ink)', borderRadius: 3, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--ink)', textDecoration: 'none', background: 'var(--paper)' }}>
-              Tableau ↗
-            </a>
-          )}
+      {item.links?.tableau && !item.tableauPath && (
+        <div style={{ margin: '24px 0 16px' }}>
+          <a href={item.links.tableau} target="_blank" rel="noopener noreferrer"
+             style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', border: '1px solid var(--ink)', borderRadius: 3, fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--ink)', textDecoration: 'none', background: 'var(--paper)' }}>
+            Tableau ↗
+          </a>
         </div>
       )}
 

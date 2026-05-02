@@ -720,8 +720,21 @@ img { display: block; }
   color: var(--ink-soft);
   font-weight: 400;
   line-height: 1.4;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
+.doc-github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.15s;
+}
+.doc-github-link:hover { color: var(--ink); }
 .doc h3 {
   font-family: var(--font-sans);
   font-size: 11px;
