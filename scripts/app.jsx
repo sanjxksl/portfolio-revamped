@@ -276,7 +276,7 @@ function getDefaultIcons() {
     { id: 'notion',       label: 'Notes',        kind: 'notion',                 anchor_h:'left', dx:1153, anchor_v:'top', dy:113, action: { type: 'reading' } },
     { id: 'projects',     label: 'projects',     kind: 'folder', color: 'blue',  anchor_h:'left', dx:149,  anchor_v:'top', dy:80,  action: { type: 'finder', folder: 'projects' } },
     { id: 'headshot',     label: 'about.png',    kind: 'image', src: 'images/headshot.png', anchor_h:'left', dx:35, anchor_v:'top', dy:186, action: { type: 'about' } },
-    { id: 'learning',     label: 'learning.log', kind: 'doc',                    anchor_h:'left', dx:1062, anchor_v:'top', dy:114, action: { type: 'launch', id: 'learning' } },
+    { id: 'learning',     label: 'log',           kind: 'learning',               anchor_h:'left', dx:1062, anchor_v:'top', dy:114, action: { type: 'launch', id: 'learning' } },
     { id: 'competitions', label: 'competitions', kind: 'folder', color: 'peony', anchor_h:'left', dx:34,   anchor_v:'top', dy:319, action: { type: 'finder', folder: 'competitions' } },
     { id: 'resume',       label: 'resume.pdf',   kind: 'resume',                 anchor_h:'left', dx:148,  anchor_v:'top', dy:191, action: { type: 'launch', id: 'resume' } },
   ];
@@ -360,6 +360,7 @@ function DesktopIcons({ onAction }) {
             {icon.kind === 'app-mail' && <MailAppIcon />}
             {icon.kind === 'app-github' && <GithubAppIcon />}
             {icon.kind === 'notion' && <NotesAppIcon />}
+            {icon.kind === 'learning' && <LearningLogIcon />}
           </div>
           <span className="label">{icon.label}</span>
         </div>
